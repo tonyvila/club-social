@@ -103,6 +103,20 @@
       padding: 0;
     }
 
+    @media (max-width: 768px) {
+      .video-row {
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        flex-wrap: nowrap;
+      }
+      .video-row video {
+        flex: 0 0 100%;
+        width: 100%;
+        scroll-snap-align: start;
+      }
+    }
+
     .content {
       position: relative;
       z-index: 1;
