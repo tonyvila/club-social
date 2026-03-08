@@ -174,7 +174,7 @@
       particles = [];
       if (!imageData) return;
 
-      const gap = 6; // Sample every N pixels
+      const gap = 5; // Sample every N pixels
       const offsetX = (w - imgW) / 2;
       const offsetY = (h - imgH) / 2;
 
@@ -199,14 +199,14 @@
             sx: Math.random() * 0.0004 + 0.0001,
             sy: Math.random() * 0.0004 + 0.0001,
             phase: Math.random() * Math.PI * 2,
-            // Image target position
-            ix: offsetX + x,
-            iy: offsetY + y,
+            // Image target position (jittered to avoid grid)
+            ix: offsetX + x + (Math.random() - 0.5) * gap * 1.5,
+            iy: offsetY + y + (Math.random() - 0.5) * gap * 1.5,
             // Current position
             x: Math.random() * w,
             y: Math.random() * h,
             // Appearance
-            r: Math.max(brightness / 255 * 1, 0.3),
+            r: Math.random() * 0.8 + 0.3,
             alpha: Math.min(brightness / 255 * 0.4 + 0.1, 0.5),
             brightness: brightness,
           });
