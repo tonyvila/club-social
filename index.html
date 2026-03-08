@@ -104,26 +104,26 @@
     }
 
     @media (max-width: 768px) {
-      .section {
-        overflow: visible;
-      }
+      body { overflow-x: hidden; }
       .video-section {
         position: relative;
-        height: 200vh;
+        height: 250vh;
       }
-      .video-section .video-row {
+      .video-row-clip {
         position: sticky;
         top: 100px;
-        overflow: hidden;
-        flex-wrap: nowrap;
-        will-change: transform;
         width: 100vw;
+        overflow: hidden;
       }
-      .video-section .video-row video {
+      .video-row-clip .video-row {
+        display: flex;
+        flex-wrap: nowrap;
+        width: 300vw;
+        will-change: transform;
+      }
+      .video-row-clip .video-row video {
         flex: 0 0 100vw;
         width: 100vw;
-        min-width: 100vw;
-        display: block;
       }
     }
 
@@ -148,30 +148,36 @@
   <div class="section" style="z-index:5">
     <div class="section-bar">Nochevieja 2025</div>
     <div class="video-section">
-      <div class="video-row">
-        <video src="video1.mp4" autoplay muted loop playsinline></video>
-        <video src="video2.mp4" autoplay muted loop playsinline></video>
-        <video src="video3.mp4" autoplay muted loop playsinline></video>
+      <div class="video-row-clip">
+        <div class="video-row">
+          <video src="video1.mp4" autoplay muted loop playsinline></video>
+          <video src="video2.mp4" autoplay muted loop playsinline></video>
+          <video src="video3.mp4" autoplay muted loop playsinline></video>
+        </div>
       </div>
     </div>
   </div>
   <div class="section" style="z-index:6">
     <div class="section-bar">Lujuria Nov 2025</div>
     <div class="video-section">
-      <div class="video-row">
-        <video src="video4.mp4" autoplay muted loop playsinline></video>
-        <video src="video5.mp4" autoplay muted loop playsinline></video>
-        <video src="video6.mp4" autoplay muted loop playsinline></video>
+      <div class="video-row-clip">
+        <div class="video-row">
+          <video src="video4.mp4" autoplay muted loop playsinline></video>
+          <video src="video5.mp4" autoplay muted loop playsinline></video>
+          <video src="video6.mp4" autoplay muted loop playsinline></video>
+        </div>
       </div>
     </div>
   </div>
   <div class="section" style="z-index:7">
     <div class="section-bar">La Mar de Músicas 2025 Afterparty</div>
     <div class="video-section">
-      <div class="video-row">
-        <video src="video7.mp4" autoplay muted loop playsinline></video>
-        <video src="video8.mp4" autoplay muted loop playsinline></video>
-        <video src="video9.mp4" autoplay muted loop playsinline></video>
+      <div class="video-row-clip">
+        <div class="video-row">
+          <video src="video7.mp4" autoplay muted loop playsinline></video>
+          <video src="video8.mp4" autoplay muted loop playsinline></video>
+          <video src="video9.mp4" autoplay muted loop playsinline></video>
+        </div>
       </div>
     </div>
   </div>
@@ -346,14 +352,14 @@
       if (window.innerWidth > 768) return;
       const vw = window.innerWidth;
       document.querySelectorAll('.video-section').forEach(sec => {
+        const clip = sec.querySelector('.video-row-clip');
         const row = sec.querySelector('.video-row');
         const count = row.children.length;
         const rect = sec.getBoundingClientRect();
-        // progress: 0 when section top hits sticky point, 1 when section bottom reaches it
-        const stickyTop = 100;
-        const travel = sec.offsetHeight - row.offsetHeight;
+        const clipH = clip.offsetHeight;
+        const travel = sec.offsetHeight - clipH;
         if (travel <= 0) return;
-        const progress = Math.min(Math.max(-(rect.top - stickyTop) / travel, 0), 1);
+        const progress = Math.min(Math.max(-rect.top / travel, 0), 1);
         row.style.transform = `translateX(-${progress * vw * (count - 1)}px)`;
       });
     }
