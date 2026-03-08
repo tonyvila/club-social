@@ -104,9 +104,12 @@
     }
 
     @media (max-width: 768px) {
+      .section {
+        overflow: visible;
+      }
       .video-section {
         position: relative;
-        height: 300vw;
+        height: 200vh;
       }
       .video-section .video-row {
         position: sticky;
@@ -114,11 +117,13 @@
         overflow: hidden;
         flex-wrap: nowrap;
         will-change: transform;
+        width: 100vw;
       }
       .video-section .video-row video {
         flex: 0 0 100vw;
         width: 100vw;
         min-width: 100vw;
+        display: block;
       }
     }
 
@@ -340,18 +345,16 @@
     function updateVideoScroll() {
       if (window.innerWidth > 768) return;
       const vw = window.innerWidth;
-      const sections = document.querySelectorAll('.video-section');
-      sections.forEach(sec => {
+      document.querySelectorAll('.video-section').forEach(sec => {
         const row = sec.querySelector('.video-row');
-        const videoCount = row.querySelectorAll('video').length;
+        const count = row.children.length;
         const rect = sec.getBoundingClientRect();
-        const sectionH = sec.offsetHeight;
-        const videoH = row.offsetHeight;
-        const scrollRange = sectionH - videoH;
-        if (scrollRange <= 0) return;
-        const progress = Math.min(Math.max(-rect.top / scrollRange, 0), 1);
-        const maxTx = vw * (videoCount - 1);
-        row.style.transform = `translateX(-${progress * maxTx}px)`;
+        // progress: 0 when section top hits sticky point, 1 when section bottom reaches it
+        const stickyTop = 100;
+        const travel = sec.offsetHeight - row.offsetHeight;
+        if (travel <= 0) return;
+        const progress = Math.min(Math.max(-(rect.top - stickyTop) / travel, 0), 1);
+        row.style.transform = `translateX(-${progress * vw * (count - 1)}px)`;
       });
     }
 
