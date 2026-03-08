@@ -5,15 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Club Social</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
-
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       background: #000;
       color: #fff;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      min-height: 100vh;
     }
 
     canvas {
@@ -25,6 +22,43 @@
       z-index: 0;
     }
 
+    /* Navbar */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      z-index: 10;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    nav.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    nav .nav-logo {
+      font-weight: 700;
+      font-size: 1.4rem;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 400;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    nav a:hover { opacity: 1; }
+
+    /* Hero */
     .hero {
       position: relative;
       z-index: 1;
@@ -40,15 +74,64 @@
       line-height: 0.9;
       letter-spacing: -0.03em;
       text-transform: uppercase;
+      transition: opacity 0.4s, transform 0.4s;
+    }
+    .hero h1.fading {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+
+    /* Content sections */
+    .content {
+      position: relative;
+      z-index: 1;
+      min-height: 200vh;
     }
   </style>
 </head>
 <body>
   <canvas id="particles"></canvas>
-  <section class="hero">
-    <h1>Club<br>Social</h1>
+
+  <nav id="navbar">
+    <span class="nav-logo">Club Social</span>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <section class="hero" id="hero">
+    <h1 id="heroTitle">Club<br>Social</h1>
   </section>
+
+  <section class="content">
+  </section>
+
   <script>
+    // --- Scroll: hero title fades → navbar appears ---
+    const heroTitle = document.getElementById('heroTitle');
+    const navbar = document.getElementById('navbar');
+    const hero = document.getElementById('hero');
+
+    function onScroll() {
+      const scrollY = window.scrollY;
+      const triggerStart = window.innerHeight * 0.3;
+      const triggerEnd = window.innerHeight * 0.6;
+
+      if (scrollY > triggerStart) {
+        heroTitle.classList.add('fading');
+      } else {
+        heroTitle.classList.remove('fading');
+      }
+
+      if (scrollY > triggerEnd) {
+        navbar.classList.add('visible');
+      } else {
+        navbar.classList.remove('visible');
+      }
+    }
+
+    window.addEventListener('scroll', onScroll);
+    onScroll();
+
+    // --- Particles ---
     const canvas = document.getElementById('particles');
     const ctx = canvas.getContext('2d');
     let w, h, particles;
