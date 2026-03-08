@@ -37,7 +37,7 @@
     nav a {
       color: #fff;
       text-decoration: none;
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       font-weight: 400;
       opacity: 0;
       transition: opacity 0.3s;
@@ -85,7 +85,7 @@
     const contactLink = document.getElementById('contactLink');
 
     const heroFontSize = () => Math.min(window.innerWidth * 0.12, 192);
-    const navFontSize = 22;
+    const navFontSize = 16;
 
     const clubHeroLeft = () => 60;
     const clubHeroTop = () => window.innerHeight * 0.4;
@@ -93,9 +93,9 @@
     const socialHeroTop = () => window.innerHeight * 0.4 + heroFontSize() * 0.95;
 
     const clubNavLeft = () => 40;
-    const clubNavTop = () => 32;
-    const socialNavLeft = () => 40 + navFontSize * 2.8;
-    const socialNavTop = () => 32;
+    const clubNavTop = () => 24;
+    const socialNavLeft = () => 40 + navFontSize * 3;
+    const socialNavTop = () => 24;
 
     const scrollEnd = () => window.innerHeight * 0.5;
 
