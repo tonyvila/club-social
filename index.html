@@ -339,18 +339,19 @@
     // --- Mobile horizontal video scroll ---
     function updateVideoScroll() {
       if (window.innerWidth > 768) return;
+      const vw = window.innerWidth;
       const sections = document.querySelectorAll('.video-section');
       sections.forEach(sec => {
         const row = sec.querySelector('.video-row');
+        const videoCount = row.querySelectorAll('video').length;
         const rect = sec.getBoundingClientRect();
         const sectionH = sec.offsetHeight;
         const videoH = row.offsetHeight;
         const scrollRange = sectionH - videoH;
-        // How far through this section are we (0 to 1)
+        if (scrollRange <= 0) return;
         const progress = Math.min(Math.max(-rect.top / scrollRange, 0), 1);
-        // Translate the row: 0% to -200% (3 videos)
-        const tx = progress * (row.scrollWidth - window.innerWidth);
-        row.style.transform = `translateX(-${tx}px)`;
+        const maxTx = vw * (videoCount - 1);
+        row.style.transform = `translateX(-${progress * maxTx}px)`;
       });
     }
 
