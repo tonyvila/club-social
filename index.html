@@ -253,7 +253,7 @@
           const sc = document.createElement('canvas');
           const sCtx = sc.getContext('2d');
           const aspect = img.height / img.width;
-          imgW = Math.floor(w * 0.65);
+          imgW = Math.floor(w * 0.85);
           imgH = Math.floor(imgW * aspect);
           sc.width = imgW; sc.height = imgH;
           sCtx.drawImage(img, 0, 0, imgW, imgH);
