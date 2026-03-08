@@ -33,6 +33,7 @@
       justify-content: flex-end;
       padding: 0 40px;
       z-index: 10;
+      background: #000;
     }
     nav a {
       color: #fff;
@@ -58,6 +59,35 @@
     }
 
     .hero-spacer { height: 100vh; }
+
+    .section-bar {
+      position: relative;
+      z-index: 5;
+      height: 36px;
+      background: #e0e0e0;
+      display: flex;
+      align-items: center;
+      padding: 0 40px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #000;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .section-bar.stuck {
+      position: fixed;
+      top: 64px;
+      left: 0;
+      right: 0;
+    }
+    .section-bar-placeholder {
+      height: 36px;
+      display: none;
+    }
+    .section-bar-placeholder.active {
+      display: block;
+    }
+
     .content {
       position: relative;
       z-index: 1;
@@ -76,6 +106,8 @@
   <div class="word" id="wordSocial">Social</div>
 
   <div class="hero-spacer"></div>
+  <div class="section-bar" id="sectionBar">Nochevieja 2025</div>
+  <div class="section-bar-placeholder" id="sectionBarPh"></div>
   <section class="content"></section>
 
   <script>
@@ -98,9 +130,30 @@
     function lerp(a, b, t) { return a + (b - a) * t; }
     function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
 
+    const sectionBar = document.getElementById('sectionBar');
+    const sectionBarPh = document.getElementById('sectionBarPh');
+    let barOriginalTop = 0;
+
+    function updateBarTop() {
+      if (!sectionBar.classList.contains('stuck')) {
+        barOriginalTop = sectionBar.getBoundingClientRect().top + window.scrollY;
+      }
+    }
+
     // --- Scroll handler (passive, reads scrollY, sets scrollProgress) ---
     function onScroll() {
       const scrollY = window.scrollY;
+
+      // Sticky section bar
+      if (scrollY + 64 >= barOriginalTop) {
+        if (!sectionBar.classList.contains('stuck')) {
+          sectionBar.classList.add('stuck');
+          sectionBarPh.classList.add('active');
+        }
+      } else {
+        sectionBar.classList.remove('stuck');
+        sectionBarPh.classList.remove('active');
+      }
       const end = scrollEnd();
       const raw = Math.min(Math.max(scrollY / end, 0), 1);
       scrollProgress = raw;
@@ -232,6 +285,7 @@
       resize();
       await loadImage();
       createParticles();
+      updateBarTop();
       onScroll();
     });
 
@@ -240,6 +294,7 @@
       resize();
       await loadImage();
       createParticles();
+      updateBarTop();
       onScroll();
       requestAnimationFrame(draw);
     })();
