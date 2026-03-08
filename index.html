@@ -106,17 +106,19 @@
     @media (max-width: 768px) {
       .video-section {
         position: relative;
-        height: 300vh;
+        height: 300vw;
       }
       .video-section .video-row {
         position: sticky;
         top: 100px;
         overflow: hidden;
         flex-wrap: nowrap;
+        will-change: transform;
       }
       .video-section .video-row video {
-        flex: 0 0 100%;
-        width: 100%;
+        flex: 0 0 100vw;
+        width: 100vw;
+        min-width: 100vw;
       }
     }
 
