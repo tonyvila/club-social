@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Club Social — Contacto</title>
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #000;
+      color: #fff;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      z-index: 10;
+      background: #000;
+    }
+    nav .logo {
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+      color: #fff;
+      text-decoration: none;
+    }
+    nav .nav-link {
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+      color: #fff;
+      text-decoration: none;
+      opacity: 0.7;
+      transition: opacity 0.3s;
+    }
+    nav .nav-link:hover { opacity: 1; }
+
+    .page {
+      padding: 120px 40px 80px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+      margin-bottom: 40px;
+    }
+
+    /* Contact Form */
+    .contact-section {
+      margin-bottom: 80px;
+    }
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 600px;
+    }
+    .contact-form input,
+    .contact-form textarea {
+      background: #111;
+      border: 1px solid #333;
+      color: #fff;
+      padding: 16px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      border-radius: 0;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      border-color: #fff;
+    }
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder {
+      color: #666;
+    }
+    .contact-form textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+    .contact-form button {
+      background: #fff;
+      color: #000;
+      border: none;
+      padding: 16px 40px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      align-self: flex-start;
+      transition: opacity 0.3s;
+    }
+    .contact-form button:hover {
+      opacity: 0.8;
+    }
+
+    /* Instagram Feed */
+    .ig-section {
+      margin-bottom: 80px;
+    }
+    .ig-feed {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      margin-bottom: 60px;
+    }
+    .ig-feed-placeholder {
+      color: #666;
+      font-size: 0.85rem;
+      text-align: center;
+      padding: 60px 20px;
+      border: 1px dashed #333;
+    }
+
+    /* Instagram Profile Card */
+    .ig-card {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      background: #111;
+      padding: 32px;
+      max-width: 600px;
+    }
+    .ig-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .ig-avatar svg {
+      width: 40px;
+      height: 40px;
+      fill: #fff;
+    }
+    .ig-info {
+      flex: 1;
+    }
+    .ig-handle {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .ig-handle a {
+      color: #fff;
+      text-decoration: none;
+    }
+    .ig-handle a:hover {
+      text-decoration: underline;
+    }
+    .ig-bio {
+      color: #999;
+      font-size: 0.85rem;
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+    .ig-follow {
+      display: inline-block;
+      background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 28px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: opacity 0.3s;
+    }
+    .ig-follow:hover {
+      opacity: 0.85;
+    }
+
+    @media (max-width: 600px) {
+      .page { padding: 100px 20px 60px; }
+      nav { padding: 0 20px; }
+      .ig-card { flex-direction: column; text-align: center; padding: 24px; }
+      .ig-feed { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="logo">Club Social</a>
+    <a href="#" class="nav-link">Contacto</a>
+  </nav>
+
+  <div class="page">
+
+    <!-- Contact Form -->
+    <section class="contact-section">
+      <h2>Contacto</h2>
+      <form class="contact-form" action="https://formspree.io/f/placeholder" method="POST">
+        <input type="text" name="name" placeholder="Nombre" required />
+        <input type="email" name="email" placeholder="Email" required />
+        <input type="text" name="subject" placeholder="Asunto" />
+        <textarea name="message" placeholder="Mensaje" required></textarea>
+        <button type="submit">Enviar</button>
+      </form>
+    </section>
+
+    <!-- Instagram Feed -->
+    <section class="ig-section">
+      <h2>Instagram</h2>
+      <!-- Replace with Elfsight, SnapWidget, or Behold embed code -->
+      <div id="ig-feed-widget">
+        <script src="https://static.elfsight.com/platform/platform.js" async></script>
+        <div class="elfsight-app-lazy" data-elfsight-app-lazy></div>
+        <noscript>
+          <div class="ig-feed-placeholder">
+            Síguenos en <a href="https://www.instagram.com/casinosocialclub_" style="color:#fff">@casinosocialclub_</a>
+          </div>
+        </noscript>
+      </div>
+    </section>
+
+    <!-- Instagram Profile Card -->
+    <section class="ig-section">
+      <div class="ig-card">
+        <div class="ig-avatar">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+          </svg>
+        </div>
+        <div class="ig-info">
+          <div class="ig-handle"><a href="https://www.instagram.com/casinosocialclub_" target="_blank">@casinosocialclub_</a></div>
+          <div class="ig-bio">Colectivo artístico · Cartagena</div>
+          <a href="https://www.instagram.com/casinosocialclub_" target="_blank" class="ig-follow">Seguir en Instagram</a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+</body>
+</html>
