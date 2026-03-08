@@ -58,11 +58,17 @@
       pointer-events: none;
     }
 
-    .hero-spacer { height: 100vh; }
+    .hero-spacer { height: 150vh; }
 
-    .section-bar {
+    .sections-wrapper {
       position: relative;
       z-index: 5;
+    }
+
+    .section-bar {
+      position: sticky;
+      top: 64px;
+      z-index: 6;
       height: 36px;
       background: #e0e0e0;
       display: flex;
@@ -74,18 +80,17 @@
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
-    .section-bar.stuck {
-      position: fixed;
-      top: 64px;
-      left: 0;
-      right: 0;
+
+    .video-row {
+      display: flex;
+      width: 100%;
+      background: #000;
     }
-    .section-bar-placeholder {
-      height: 36px;
-      display: none;
-    }
-    .section-bar-placeholder.active {
+    .video-row video {
+      flex: 1;
+      width: 33.333%;
       display: block;
+      object-fit: cover;
     }
 
     .content {
@@ -106,8 +111,14 @@
   <div class="word" id="wordSocial">Social</div>
 
   <div class="hero-spacer"></div>
-  <div class="section-bar" id="sectionBar">Nochevieja 2025</div>
-  <div class="section-bar-placeholder" id="sectionBarPh"></div>
+  <div class="sections-wrapper">
+    <div class="section-bar">Nochevieja 2025</div>
+    <div class="video-row">
+      <video src="video1.mp4" autoplay muted loop playsinline></video>
+      <video src="video2.mp4" autoplay muted loop playsinline></video>
+      <video src="video3.mp4" autoplay muted loop playsinline></video>
+    </div>
+  </div>
   <section class="content"></section>
 
   <script>
@@ -130,30 +141,9 @@
     function lerp(a, b, t) { return a + (b - a) * t; }
     function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
 
-    const sectionBar = document.getElementById('sectionBar');
-    const sectionBarPh = document.getElementById('sectionBarPh');
-    let barOriginalTop = 0;
-
-    function updateBarTop() {
-      if (!sectionBar.classList.contains('stuck')) {
-        barOriginalTop = sectionBar.getBoundingClientRect().top + window.scrollY;
-      }
-    }
-
     // --- Scroll handler (passive, reads scrollY, sets scrollProgress) ---
     function onScroll() {
       const scrollY = window.scrollY;
-
-      // Sticky section bar
-      if (scrollY + 64 >= barOriginalTop) {
-        if (!sectionBar.classList.contains('stuck')) {
-          sectionBar.classList.add('stuck');
-          sectionBarPh.classList.add('active');
-        }
-      } else {
-        sectionBar.classList.remove('stuck');
-        sectionBarPh.classList.remove('active');
-      }
       const end = scrollEnd();
       const raw = Math.min(Math.max(scrollY / end, 0), 1);
       scrollProgress = raw;
@@ -285,7 +275,6 @@
       resize();
       await loadImage();
       createParticles();
-      updateBarTop();
       onScroll();
     });
 
@@ -294,7 +283,6 @@
       resize();
       await loadImage();
       createParticles();
-      updateBarTop();
       onScroll();
       requestAnimationFrame(draw);
     })();
