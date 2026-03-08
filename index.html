@@ -22,7 +22,6 @@
       z-index: 0;
     }
 
-    /* Navbar - always present but Contact hidden until scrolled */
     nav {
       position: fixed;
       top: 0;
@@ -46,8 +45,7 @@
     nav a.visible { opacity: 0.7; }
     nav a:hover { opacity: 1; }
 
-    /* Floating title — moves from hero position to navbar */
-    .floating-title {
+    .word {
       position: fixed;
       z-index: 11;
       font-weight: 700;
@@ -55,13 +53,11 @@
       letter-spacing: -0.03em;
       text-transform: uppercase;
       white-space: nowrap;
-      will-change: transform, font-size, left, top;
+      will-change: transform;
+      pointer-events: none;
     }
 
-    /* Spacers */
-    .hero-spacer {
-      height: 100vh;
-    }
+    .hero-spacer { height: 100vh; }
     .content {
       position: relative;
       z-index: 1;
@@ -76,72 +72,74 @@
     <a href="#contact" id="contactLink">Contact</a>
   </nav>
 
-  <div class="floating-title" id="floatingTitle"><span id="wordClub">Club</span><br id="titleBr"><span id="wordSocial">Social</span></div>
+  <div class="word" id="wordClub">Club</div>
+  <div class="word" id="wordSocial">Social</div>
 
   <div class="hero-spacer"></div>
   <section class="content"></section>
 
   <script>
-    // --- Scroll-driven title animation ---
-    const title = document.getElementById('floatingTitle');
+    const wordClub = document.getElementById('wordClub');
+    const wordSocial = document.getElementById('wordSocial');
     const contactLink = document.getElementById('contactLink');
 
-    // Hero position: left-aligned, vertically centered
     const heroFontSize = () => Math.min(window.innerWidth * 0.12, 192);
-    const heroLeft = () => 60;
-    const heroTop = () => window.innerHeight * 0.5;
-
-    // Nav position: top-left, small
     const navFontSize = 22;
-    const navLeft = () => 40;
-    const navTop = () => 32;
 
-    const scrollStart = 0;
+    // Hero positions
+    const clubHeroLeft = () => 60;
+    const clubHeroTop = () => window.innerHeight * 0.4;
+    const socialHeroLeft = () => 60;
+    const socialHeroTop = () => window.innerHeight * 0.4 + heroFontSize() * 0.95;
+
+    // Nav positions: "Club Social" with a gap
+    const clubNavLeft = () => 40;
+    const clubNavTop = () => 32;
+    // Social goes right of Club in nav — estimate Club width at navFontSize
+    const socialNavLeft = () => 40 + navFontSize * 2.8;
+    const socialNavTop = () => 32;
+
     const scrollEnd = () => window.innerHeight * 0.5;
 
-    function lerp(a, b, t) {
-      return a + (b - a) * t;
-    }
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
 
-    function updateTitle() {
+    function update() {
       const scrollY = window.scrollY;
       const end = scrollEnd();
-      let progress = Math.min(Math.max((scrollY - scrollStart) / end, 0), 1);
-      // Ease out cubic
-      progress = 1 - Math.pow(1 - progress, 3);
+      const rawProgress = Math.min(Math.max(scrollY / end, 0), 1);
 
-      const fontSize = lerp(heroFontSize(), navFontSize, progress);
-      const left = lerp(heroLeft(), navLeft(), progress);
-      // Hero: bottom-aligned, so we use baseline. Nav: centered in navbar.
-      const top = lerp(heroTop(), navTop(), progress);
+      // Club moves slightly ahead, Social slightly behind
+      const clubProgress = easeOut(Math.min(rawProgress * 1.15, 1));
+      const socialProgress = easeOut(Math.min(Math.max((rawProgress - 0.08) * 1.2, 0), 1));
 
-      title.style.fontSize = fontSize + 'px';
-      title.style.left = left + 'px';
-      title.style.top = top + 'px';
-      // At hero size, align to bottom (transform origin bottom-left)
-      title.style.transformOrigin = 'bottom left';
-      // Translate Y so at progress=0 text sits above the bottom line
-      title.style.transform = `translateY(${lerp(0, -50, progress)}%)`;
+      // Club
+      const clubFs = lerp(heroFontSize(), navFontSize, clubProgress);
+      const clubL = lerp(clubHeroLeft(), clubNavLeft(), clubProgress);
+      const clubT = lerp(clubHeroTop(), clubNavTop(), clubProgress);
+      wordClub.style.fontSize = clubFs + 'px';
+      wordClub.style.left = clubL + 'px';
+      wordClub.style.top = clubT + 'px';
 
-      // Collapse two lines into one line
-      const br = document.getElementById('titleBr');
-      if (progress > 0.3) {
-        br.style.display = 'none';
-      } else {
-        br.style.display = '';
-      }
+      // Social
+      const socialFs = lerp(heroFontSize(), navFontSize, socialProgress);
+      const socialL = lerp(socialHeroLeft(), socialNavLeft(), socialProgress);
+      const socialT = lerp(socialHeroTop(), socialNavTop(), socialProgress);
+      wordSocial.style.fontSize = socialFs + 'px';
+      wordSocial.style.left = socialL + 'px';
+      wordSocial.style.top = socialT + 'px';
 
-      // Show contact link after scroll
-      if (progress > 0.8) {
+      // Contact link
+      if (rawProgress > 0.8) {
         contactLink.classList.add('visible');
       } else {
         contactLink.classList.remove('visible');
       }
     }
 
-    window.addEventListener('scroll', updateTitle);
-    window.addEventListener('resize', updateTitle);
-    updateTitle();
+    window.addEventListener('scroll', update);
+    window.addEventListener('resize', update);
+    update();
 
     // --- Particles ---
     const canvas = document.getElementById('particles');
