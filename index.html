@@ -8,8 +8,8 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      background: #000;
-      color: #fff;
+      background: #fff;
+      color: #000;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     }
 
@@ -35,7 +35,7 @@
       z-index: 10;
     }
     nav a {
-      color: #fff;
+      color: #000;
       text-decoration: none;
       font-size: 0.95rem;
       font-weight: 400;
@@ -184,9 +184,9 @@
           const r = imageData.data[i];
           const g = imageData.data[i + 1];
           const b = imageData.data[i + 2];
-          const brightness = (r + g + b) / 3;
+          const brightness = 255 - (r + g + b) / 3;
 
-          // Skip very dark pixels
+          // Skip bright areas (white background)
           if (brightness < 30) continue;
 
           particles.push({
@@ -257,7 +257,7 @@
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, drawR, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,255,255,${drawAlpha})`;
+        ctx.fillStyle = `rgba(0,0,0,${drawAlpha})`;
         ctx.fill();
       }
       requestAnimationFrame(draw);
