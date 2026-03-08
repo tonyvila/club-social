@@ -31,14 +31,13 @@
       right: 0;
       height: 64px;
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       justify-content: flex-end;
-      padding: 24px 40px 0;
+      padding: 0 40px;
       z-index: 10;
       background: #000;
       opacity: 0;
       transition: opacity 0.3s;
-      line-height: 0.9;
     }
     nav.visible { opacity: 1; }
     nav a {
@@ -229,8 +228,9 @@
       const sp = easeOut(Math.min(Math.max((raw - 0.08) * 1.2, 0), 1));
       const hfs = heroFontSize();
 
-      wordClub.style.cssText = `position:fixed;z-index:11;font-weight:700;line-height:0.9;letter-spacing:-0.03em;text-transform:uppercase;white-space:nowrap;pointer-events:none;font-size:${lerp(hfs, navFontSize, cp)}px;left:${lerp(60, 40, cp)}px;top:${lerp(window.innerHeight * 0.4, 24, cp)}px`;
-      wordSocial.style.cssText = `position:fixed;z-index:11;font-weight:700;line-height:0.9;letter-spacing:-0.03em;text-transform:uppercase;white-space:nowrap;pointer-events:none;font-size:${lerp(hfs, navFontSize, sp)}px;left:${lerp(60, 40 + clubNavW, sp)}px;top:${lerp(window.innerHeight * 0.4 + hfs * 0.95, 24, sp)}px`;
+      const navCenterY = (64 - navFontSize) / 2;
+      wordClub.style.cssText = `position:fixed;z-index:11;font-weight:700;line-height:1;letter-spacing:-0.03em;text-transform:uppercase;white-space:nowrap;pointer-events:none;font-size:${lerp(hfs, navFontSize, cp)}px;left:${lerp(60, 40, cp)}px;top:${lerp(window.innerHeight * 0.4, navCenterY, cp)}px`;
+      wordSocial.style.cssText = `position:fixed;z-index:11;font-weight:700;line-height:1;letter-spacing:-0.03em;text-transform:uppercase;white-space:nowrap;pointer-events:none;font-size:${lerp(hfs, navFontSize, sp)}px;left:${lerp(60, 40 + clubNavW, sp)}px;top:${lerp(window.innerHeight * 0.4 + hfs * 0.95, navCenterY, sp)}px`;
 
       const nav = document.querySelector('nav');
       if (raw > 0.8) {
