@@ -202,6 +202,18 @@
 
     const heroFontSize = () => Math.min(window.innerWidth * 0.12, 192);
     const scrollEnd = () => window.innerHeight * 1.5;
+
+    // Measure "CLUB" width at nav font size
+    function measureClubNavWidth() {
+      const span = document.createElement('span');
+      span.style.cssText = `position:absolute;visibility:hidden;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;font-size:${navFontSize}px;letter-spacing:-0.03em;text-transform:uppercase;`;
+      span.textContent = 'Club ';
+      document.body.appendChild(span);
+      const w = span.offsetWidth;
+      document.body.removeChild(span);
+      return w;
+    }
+    let clubNavW = 0;
     function lerp(a, b, t) { return a + (b - a) * t; }
     function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
 
@@ -217,9 +229,7 @@
       const hfs = heroFontSize();
 
       wordClub.style.cssText = `position:fixed;z-index:11;font-weight:700;line-height:0.9;letter-spacing:-0.03em;text-transform:uppercase;white-space:nowrap;pointer-events:none;font-size:${lerp(hfs, navFontSize, cp)}px;left:${lerp(60, 40, cp)}px;top:${lerp(window.innerHeight * 0.4, 24, cp)}px`;
-      const clubNavWidth = wordClub.offsetWidth;
-      const socialNavLeft = cp >= 1 ? 40 + clubNavWidth + 5 : lerp(60, 40 + clubNavWidth + 5, sp);
-      wordSocial.style.cssText = `position:fixed;z-index:11;font-weight:700;line-height:0.9;letter-spacing:-0.03em;text-transform:uppercase;white-space:nowrap;pointer-events:none;font-size:${lerp(hfs, navFontSize, sp)}px;left:${socialNavLeft}px;top:${lerp(window.innerHeight * 0.4 + hfs * 0.95, 24, sp)}px`;
+      wordSocial.style.cssText = `position:fixed;z-index:11;font-weight:700;line-height:0.9;letter-spacing:-0.03em;text-transform:uppercase;white-space:nowrap;pointer-events:none;font-size:${lerp(hfs, navFontSize, sp)}px;left:${lerp(60, 40 + clubNavW, sp)}px;top:${lerp(window.innerHeight * 0.4 + hfs * 0.95, 24, sp)}px`;
 
       const nav = document.querySelector('nav');
       if (raw > 0.8) {
@@ -395,6 +405,7 @@
       resize();
       lastW = window.innerWidth;
       lastH = window.innerHeight;
+      clubNavW = measureClubNavWidth();
       await loadImage();
       createParticles();
       onScroll();
