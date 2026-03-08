@@ -104,16 +104,19 @@
     }
 
     @media (max-width: 768px) {
-      .video-row {
-        overflow-x: auto;
-        scroll-snap-type: x mandatory;
-        -webkit-overflow-scrolling: touch;
+      .video-section {
+        position: relative;
+        height: 300vh;
+      }
+      .video-section .video-row {
+        position: sticky;
+        top: 100px;
+        overflow: hidden;
         flex-wrap: nowrap;
       }
-      .video-row video {
+      .video-section .video-row video {
         flex: 0 0 100%;
         width: 100%;
-        scroll-snap-align: start;
       }
     }
 
@@ -137,26 +140,32 @@
   <div class="hero-spacer"></div>
   <div class="section" style="z-index:5">
     <div class="section-bar">Nochevieja 2025</div>
-    <div class="video-row">
-      <video src="video1.mp4" autoplay muted loop playsinline></video>
-      <video src="video2.mp4" autoplay muted loop playsinline></video>
-      <video src="video3.mp4" autoplay muted loop playsinline></video>
+    <div class="video-section">
+      <div class="video-row">
+        <video src="video1.mp4" autoplay muted loop playsinline></video>
+        <video src="video2.mp4" autoplay muted loop playsinline></video>
+        <video src="video3.mp4" autoplay muted loop playsinline></video>
+      </div>
     </div>
   </div>
   <div class="section" style="z-index:6">
     <div class="section-bar">Lujuria Nov 2025</div>
-    <div class="video-row">
-      <video src="video4.mp4" autoplay muted loop playsinline></video>
-      <video src="video5.mp4" autoplay muted loop playsinline></video>
-      <video src="video6.mp4" autoplay muted loop playsinline></video>
+    <div class="video-section">
+      <div class="video-row">
+        <video src="video4.mp4" autoplay muted loop playsinline></video>
+        <video src="video5.mp4" autoplay muted loop playsinline></video>
+        <video src="video6.mp4" autoplay muted loop playsinline></video>
+      </div>
     </div>
   </div>
   <div class="section" style="z-index:7">
     <div class="section-bar">La Mar de Músicas 2025 Afterparty</div>
-    <div class="video-row">
-      <video src="video7.mp4" autoplay muted loop playsinline></video>
-      <video src="video8.mp4" autoplay muted loop playsinline></video>
-      <video src="video9.mp4" autoplay muted loop playsinline></video>
+    <div class="video-section">
+      <div class="video-row">
+        <video src="video7.mp4" autoplay muted loop playsinline></video>
+        <video src="video8.mp4" autoplay muted loop playsinline></video>
+        <video src="video9.mp4" autoplay muted loop playsinline></video>
+      </div>
     </div>
   </div>
   <section class="content"></section>
@@ -319,8 +328,26 @@
       requestAnimationFrame(draw);
     }
 
+    // --- Mobile horizontal video scroll ---
+    function updateVideoScroll() {
+      if (window.innerWidth > 768) return;
+      const sections = document.querySelectorAll('.video-section');
+      sections.forEach(sec => {
+        const row = sec.querySelector('.video-row');
+        const rect = sec.getBoundingClientRect();
+        const sectionH = sec.offsetHeight;
+        const videoH = row.offsetHeight;
+        const scrollRange = sectionH - videoH;
+        // How far through this section are we (0 to 1)
+        const progress = Math.min(Math.max(-rect.top / scrollRange, 0), 1);
+        // Translate the row: 0% to -200% (3 videos)
+        const tx = progress * (row.scrollWidth - window.innerWidth);
+        row.style.transform = `translateX(-${tx}px)`;
+      });
+    }
+
     // --- Events ---
-    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('scroll', () => { onScroll(); updateVideoScroll(); }, { passive: true });
     window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; }, { passive: true });
     window.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
     let lastW = 0, lastH = 0;
