@@ -34,7 +34,10 @@
       padding: 0 40px;
       z-index: 10;
       background: #000;
+      opacity: 0;
+      transition: opacity 0.3s;
     }
+    nav.visible { opacity: 1; }
     nav a {
       color: #fff;
       text-decoration: none;
@@ -193,8 +196,14 @@
       wordClub.style.cssText = `position:fixed;z-index:11;font-weight:700;line-height:0.9;letter-spacing:-0.03em;text-transform:uppercase;white-space:nowrap;pointer-events:none;font-size:${lerp(hfs, navFontSize, cp)}px;left:${lerp(60, 40, cp)}px;top:${lerp(window.innerHeight * 0.4, 24, cp)}px`;
       wordSocial.style.cssText = `position:fixed;z-index:11;font-weight:700;line-height:0.9;letter-spacing:-0.03em;text-transform:uppercase;white-space:nowrap;pointer-events:none;font-size:${lerp(hfs, navFontSize, sp)}px;left:${lerp(60, 40 + navFontSize * 3, sp)}px;top:${lerp(window.innerHeight * 0.4 + hfs * 0.95, 24, sp)}px`;
 
-      if (raw > 0.8) contactLink.classList.add('visible');
-      else contactLink.classList.remove('visible');
+      const nav = document.querySelector('nav');
+      if (raw > 0.8) {
+        nav.classList.add('visible');
+        contactLink.classList.add('visible');
+      } else {
+        nav.classList.remove('visible');
+        contactLink.classList.remove('visible');
+      }
     }
 
     // --- Image loading ---
