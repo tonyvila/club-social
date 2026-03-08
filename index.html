@@ -22,7 +22,7 @@
       z-index: 0;
     }
 
-    /* Navbar */
+    /* Navbar - always present but Contact hidden until scrolled */
     nav {
       position: fixed;
       top: 0;
@@ -31,57 +31,37 @@
       height: 64px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-end;
       padding: 0 40px;
       z-index: 10;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s;
-    }
-    nav.visible {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    nav .nav-logo {
-      font-weight: 700;
-      font-size: 1.4rem;
-      letter-spacing: -0.02em;
-      text-transform: uppercase;
     }
     nav a {
       color: #fff;
       text-decoration: none;
       font-size: 0.95rem;
       font-weight: 400;
-      opacity: 0.7;
-      transition: opacity 0.2s;
+      opacity: 0;
+      transition: opacity 0.3s;
     }
+    nav a.visible { opacity: 0.7; }
     nav a:hover { opacity: 1; }
 
-    /* Hero */
-    .hero {
-      position: relative;
-      z-index: 1;
-      min-height: 100vh;
-      display: flex;
-      align-items: flex-end;
-      padding: 60px;
-    }
-
-    .hero h1 {
+    /* Floating title — moves from hero position to navbar */
+    .floating-title {
+      position: fixed;
+      z-index: 11;
       font-weight: 700;
-      font-size: clamp(4rem, 12vw, 12rem);
       line-height: 0.9;
       letter-spacing: -0.03em;
       text-transform: uppercase;
-      transition: opacity 0.4s, transform 0.4s;
-    }
-    .hero h1.fading {
-      opacity: 0;
-      transform: translateY(-30px);
+      white-space: nowrap;
+      will-change: transform, font-size, left, top;
     }
 
-    /* Content sections */
+    /* Spacers */
+    .hero-spacer {
+      height: 100vh;
+    }
     .content {
       position: relative;
       z-index: 1;
@@ -92,44 +72,68 @@
 <body>
   <canvas id="particles"></canvas>
 
-  <nav id="navbar">
-    <span class="nav-logo">Club Social</span>
-    <a href="#contact">Contact</a>
+  <nav>
+    <a href="#contact" id="contactLink">Contact</a>
   </nav>
 
-  <section class="hero" id="hero">
-    <h1 id="heroTitle">Club<br>Social</h1>
-  </section>
+  <div class="floating-title" id="floatingTitle">Club Social</div>
 
-  <section class="content">
-  </section>
+  <div class="hero-spacer"></div>
+  <section class="content"></section>
 
   <script>
-    // --- Scroll: hero title fades → navbar appears ---
-    const heroTitle = document.getElementById('heroTitle');
-    const navbar = document.getElementById('navbar');
-    const hero = document.getElementById('hero');
+    // --- Scroll-driven title animation ---
+    const title = document.getElementById('floatingTitle');
+    const contactLink = document.getElementById('contactLink');
 
-    function onScroll() {
+    // Hero position: bottom-left, large
+    const heroFontSize = () => Math.min(window.innerWidth * 0.12, 192);
+    const heroLeft = () => 60;
+    const heroTop = () => window.innerHeight - 60;
+
+    // Nav position: top-left, small
+    const navFontSize = 22;
+    const navLeft = () => 40;
+    const navTop = () => 32;
+
+    const scrollStart = 0;
+    const scrollEnd = () => window.innerHeight * 0.5;
+
+    function lerp(a, b, t) {
+      return a + (b - a) * t;
+    }
+
+    function updateTitle() {
       const scrollY = window.scrollY;
-      const triggerStart = window.innerHeight * 0.3;
-      const triggerEnd = window.innerHeight * 0.6;
+      const end = scrollEnd();
+      let progress = Math.min(Math.max((scrollY - scrollStart) / end, 0), 1);
+      // Ease out cubic
+      progress = 1 - Math.pow(1 - progress, 3);
 
-      if (scrollY > triggerStart) {
-        heroTitle.classList.add('fading');
-      } else {
-        heroTitle.classList.remove('fading');
-      }
+      const fontSize = lerp(heroFontSize(), navFontSize, progress);
+      const left = lerp(heroLeft(), navLeft(), progress);
+      // Hero: bottom-aligned, so we use baseline. Nav: centered in navbar.
+      const top = lerp(heroTop(), navTop(), progress);
 
-      if (scrollY > triggerEnd) {
-        navbar.classList.add('visible');
+      title.style.fontSize = fontSize + 'px';
+      title.style.left = left + 'px';
+      title.style.top = top + 'px';
+      // At hero size, align to bottom (transform origin bottom-left)
+      title.style.transformOrigin = 'bottom left';
+      // Translate Y so at progress=0 text sits above the bottom line
+      title.style.transform = `translateY(${lerp(0, -50, progress)}%)`;
+
+      // Show contact link after scroll
+      if (progress > 0.8) {
+        contactLink.classList.add('visible');
       } else {
-        navbar.classList.remove('visible');
+        contactLink.classList.remove('visible');
       }
     }
 
-    window.addEventListener('scroll', onScroll);
-    onScroll();
+    window.addEventListener('scroll', updateTitle);
+    window.addEventListener('resize', updateTitle);
+    updateTitle();
 
     // --- Particles ---
     const canvas = document.getElementById('particles');
