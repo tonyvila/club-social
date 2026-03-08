@@ -248,8 +248,8 @@
     function draw(t) {
       ctx.clearRect(0, 0, w, h);
 
-      const imgP = Math.min(Math.max((scrollProgress - 0.2) / 0.7, 0), 1);
-      const imgE = 1 - Math.pow(1 - imgP, 3);
+      const imgP = Math.min(Math.max((scrollProgress - 0.2) / 0.5, 0), 1);
+      const imgE = imgP >= 1 ? 1 : 1 - Math.pow(1 - imgP, 3);
       const repelMult = 1 - imgE * 0.7;
       const mx = mouse.x, my = mouse.y;
       const len = particles.length;
@@ -262,10 +262,16 @@
         const p = particles[i];
 
         // Target position
-        const floatX = p.rx + Math.sin(t * p.sx + p.phase) * p.dx;
-        const floatY = p.ry + Math.cos(t * p.sy + p.phase * 1.3) * p.dy;
-        let tx = floatX + (p.ix - floatX) * imgE;
-        let ty = floatY + (p.iy - floatY) * imgE;
+        let tx, ty;
+        if (imgE >= 1) {
+          tx = p.ix;
+          ty = p.iy;
+        } else {
+          const floatX = p.rx + Math.sin(t * p.sx + p.phase) * p.dx;
+          const floatY = p.ry + Math.cos(t * p.sy + p.phase * 1.3) * p.dy;
+          tx = floatX + (p.ix - floatX) * imgE;
+          ty = floatY + (p.iy - floatY) * imgE;
+        }
 
         // Mouse repel (skip sqrt when outside radius)
         const mdx = tx - mx;
