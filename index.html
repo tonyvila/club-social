@@ -76,7 +76,7 @@
     <a href="#contact" id="contactLink">Contact</a>
   </nav>
 
-  <div class="floating-title" id="floatingTitle">Club Social</div>
+  <div class="floating-title" id="floatingTitle"><span id="wordClub">Club</span><br id="titleBr"><span id="wordSocial">Social</span></div>
 
   <div class="hero-spacer"></div>
   <section class="content"></section>
@@ -86,10 +86,10 @@
     const title = document.getElementById('floatingTitle');
     const contactLink = document.getElementById('contactLink');
 
-    // Hero position: bottom-left, large
+    // Hero position: left-aligned, vertically centered
     const heroFontSize = () => Math.min(window.innerWidth * 0.12, 192);
     const heroLeft = () => 60;
-    const heroTop = () => window.innerHeight - 60;
+    const heroTop = () => window.innerHeight * 0.5;
 
     // Nav position: top-left, small
     const navFontSize = 22;
@@ -122,6 +122,14 @@
       title.style.transformOrigin = 'bottom left';
       // Translate Y so at progress=0 text sits above the bottom line
       title.style.transform = `translateY(${lerp(0, -50, progress)}%)`;
+
+      // Collapse two lines into one line
+      const br = document.getElementById('titleBr');
+      if (progress > 0.3) {
+        br.style.display = 'none';
+      } else {
+        br.style.display = '';
+      }
 
       // Show contact link after scroll
       if (progress > 0.8) {
