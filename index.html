@@ -80,6 +80,19 @@
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
+    .section-bar.fixed {
+      position: fixed;
+      top: 64px;
+      left: 0;
+      right: 0;
+    }
+    .section-bar-ph {
+      height: 36px;
+      display: none;
+    }
+    .section-bar-ph.active {
+      display: block;
+    }
 
     .video-row {
       display: flex;
@@ -112,12 +125,14 @@
 
   <div class="hero-spacer"></div>
   <div class="sections-wrapper">
-    <div class="section-bar">Nochevieja 2025</div>
+    <div class="section-bar" id="barNoche">Nochevieja 2025</div>
+    <div class="section-bar-ph" id="barNochePh"></div>
     <div class="video-row">
       <video src="video1.mp4" autoplay muted loop playsinline></video>
       <video src="video2.mp4" autoplay muted loop playsinline></video>
       <video src="video3.mp4" autoplay muted loop playsinline></video>
     </div>
+    <div class="section-bar">Lujuria Nov 2025</div>
   </div>
   <section class="content"></section>
 
@@ -141,9 +156,27 @@
     function lerp(a, b, t) { return a + (b - a) * t; }
     function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
 
+    const barNoche = document.getElementById('barNoche');
+    const barNochePh = document.getElementById('barNochePh');
+    let barNocheTop = 0;
+    let barNocheFixed = false;
+
+    function calcBarTop() {
+      if (!barNocheFixed) {
+        barNocheTop = barNoche.getBoundingClientRect().top + window.scrollY;
+      }
+    }
+
     // --- Scroll handler (passive, reads scrollY, sets scrollProgress) ---
     function onScroll() {
       const scrollY = window.scrollY;
+
+      // Make Nochevieja bar permanently fixed
+      if (!barNocheFixed && scrollY + 64 >= barNocheTop) {
+        barNoche.classList.add('fixed');
+        barNochePh.classList.add('active');
+        barNocheFixed = true;
+      }
       const end = scrollEnd();
       const raw = Math.min(Math.max(scrollY / end, 0), 1);
       scrollProgress = raw;
@@ -275,6 +308,7 @@
       resize();
       await loadImage();
       createParticles();
+      calcBarTop();
       onScroll();
     });
 
@@ -283,6 +317,7 @@
       resize();
       await loadImage();
       createParticles();
+      calcBarTop();
       onScroll();
       requestAnimationFrame(draw);
     })();
