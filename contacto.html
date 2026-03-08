@@ -193,8 +193,13 @@
       opacity: 0.85;
     }
 
-    .eapps-link { display: none !important; }
-    a[href*="elfsight"] { display: none !important; }
+    .eapps-link,
+    a[href*="elfsight"],
+    .eapps-widget-toolbar,
+    [class*="elfsight-app"] a[href*="elfsight"],
+    div[class*="elfsight"] ~ a,
+    .eapps-instagram-feed-posts-grid-load-more-container + *,
+    [style*="elfsight"] { display: none !important; visibility: hidden !important; height: 0 !important; overflow: hidden !important; }
 
     @media (max-width: 600px) {
       .page { padding: 100px 20px 60px; }
@@ -266,5 +271,11 @@
 
   </div>
 
+  <script>
+    // Remove Elfsight branding
+    setInterval(() => {
+      document.querySelectorAll('a[href*="elfsight"], .eapps-link, [class*="BrandingRoot"]').forEach(el => el.remove());
+    }, 500);
+  </script>
 </body>
 </html>
