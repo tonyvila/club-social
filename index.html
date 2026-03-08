@@ -309,7 +309,18 @@
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; }, { passive: true });
     window.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+    let lastW = 0, lastH = 0;
     window.addEventListener('resize', async () => {
+      const newW = window.innerWidth;
+      const newH = window.innerHeight;
+      // Skip if only height changed slightly (mobile URL bar)
+      if (newW === lastW && Math.abs(newH - lastH) < 150) {
+        resize();
+        onScroll();
+        return;
+      }
+      lastW = newW;
+      lastH = newH;
       resize();
       await loadImage();
       createParticles();
@@ -319,6 +330,8 @@
     // Init
     (async () => {
       resize();
+      lastW = window.innerWidth;
+      lastH = window.innerHeight;
       await loadImage();
       createParticles();
       onScroll();
