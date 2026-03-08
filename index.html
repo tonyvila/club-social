@@ -252,8 +252,8 @@
         p.y += (ty - p.y) * 0.12;
 
         // Size and alpha increase when forming image
-        const drawR = lerp(p.r * 0.5, p.r, imgEased);
-        const drawAlpha = lerp(p.alpha * 0.5, p.alpha, imgEased);
+        const drawR = lerp(p.r, p.r, imgEased);
+        const drawAlpha = lerp(p.alpha, p.alpha, imgEased);
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, drawR, 0, Math.PI * 2);
