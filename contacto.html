@@ -223,14 +223,6 @@
       opacity: 0.85;
     }
 
-    .eapps-link,
-    a[href*="elfsight"],
-    .eapps-widget-toolbar,
-    [class*="elfsight-app"] a[href*="elfsight"],
-    div[class*="elfsight"] ~ a,
-    .eapps-instagram-feed-posts-grid-load-more-container + *,
-    [style*="elfsight"] { display: none !important; visibility: hidden !important; height: 0 !important; overflow: hidden !important; }
-
     @media (max-width: 600px) {
       .page { padding: 100px 20px 60px; }
       nav { padding: 0 20px; }
@@ -272,9 +264,6 @@
 
     <!-- Instagram Feed -->
     <section class="ig-section">
-      <!-- Elfsight Instagram Feed -->
-      <script src="https://elfsightcdn.com/platform.js" async></script>
-      <div class="elfsight-app-a0020019-7221-4649-9930-5bb0c5c012f2" data-elfsight-app-lazy></div>
     </section>
 
     <!-- WhatsApp Channel -->
@@ -311,11 +300,5 @@
 
   </div>
 
-  <script>
-    // Remove Elfsight branding
-    setInterval(() => {
-      document.querySelectorAll('a[href*="elfsight"], .eapps-link, [class*="BrandingRoot"]').forEach(el => el.remove());
-    }, 500);
-  </script>
 </body>
 </html>
