@@ -265,8 +265,8 @@
     }
 
     const isMobile = () => window.innerWidth <= 768;
-    const MAX_PARTICLES_DESKTOP = 20000;
-    const MAX_PARTICLES_MOBILE = 8000;
+    const MAX_PARTICLES_DESKTOP = 35000;
+    const MAX_PARTICLES_MOBILE = 12000;
 
     function createParticles() {
       particles = [];
@@ -307,7 +307,7 @@
           ix: ox + c.x + (Math.random() - 0.5) * jitter,
           iy: oy + c.y + (Math.random() - 0.5) * jitter,
           x: Math.random() * w, y: Math.random() * h,
-          r: Math.random() * 0.8 + 0.3,
+          r: Math.random() * 0.6 + 0.2,
           alpha: Math.min(c.brightness / 255 * 0.4 + 0.1, 0.5),
         });
       }
