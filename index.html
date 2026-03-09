@@ -203,7 +203,7 @@
     const repelStrength = 8;
     let imageData = null, imgW = 0, imgH = 0;
 
-    const heroFontSize = () => Math.min(window.innerWidth * 0.12, 192);
+    const heroFontSize = () => Math.min(window.innerWidth * 0.18, 280);
     const scrollEnd = () => window.innerHeight * 1.5;
 
     // Measure "CLUB" width at nav font size
@@ -232,8 +232,8 @@
       const hfs = heroFontSize();
 
       const navCenterY = (64 - navFontSize) / 2;
-      wordClub.style.cssText = `position:fixed;z-index:11;font-weight:300;line-height:1;letter-spacing:-0.03em;text-transform:uppercase;white-space:nowrap;pointer-events:none;font-size:${lerp(hfs, navFontSize, cp)}px;left:${lerp(60, 40, cp)}px;top:${lerp(window.innerHeight * 0.4, navCenterY, cp)}px`;
-      wordSocial.style.cssText = `position:fixed;z-index:11;font-weight:700;line-height:1;letter-spacing:-0.03em;text-transform:uppercase;white-space:nowrap;pointer-events:none;font-size:${lerp(hfs, navFontSize, sp)}px;left:${lerp(60, 40 + clubNavW, sp)}px;top:${lerp(window.innerHeight * 0.4 + hfs * 0.95, navCenterY, sp)}px`;
+      wordClub.style.cssText = `position:fixed;z-index:11;font-weight:300;line-height:1;letter-spacing:-0.03em;text-transform:uppercase;white-space:nowrap;pointer-events:none;font-size:${lerp(hfs, navFontSize, cp)}px;left:${lerp(20, 40, cp)}px;top:${lerp(window.innerHeight * 0.4, navCenterY, cp)}px`;
+      wordSocial.style.cssText = `position:fixed;z-index:11;font-weight:700;line-height:1;letter-spacing:-0.03em;text-transform:uppercase;white-space:nowrap;pointer-events:none;font-size:${lerp(hfs, navFontSize, sp)}px;left:${lerp(20, 40 + clubNavW, sp)}px;top:${lerp(window.innerHeight * 0.4 + hfs * 0.95, navCenterY, sp)}px`;
 
       const nav = document.querySelector('nav');
       if (raw > 0.8) {
