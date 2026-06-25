@@ -126,25 +126,12 @@
 
     @media (max-width: 768px) {
       body { overflow-x: hidden; }
-      .video-section {
-        position: relative;
-        height: 250vh;
+      .video-row {
+        flex-direction: column;
       }
-      .video-row-clip {
-        position: sticky;
-        top: 100px;
-        width: 100vw;
-        overflow: hidden;
-      }
-      .video-row-clip .video-row {
-        display: flex;
-        flex-wrap: nowrap;
-        width: 300vw;
-        will-change: transform;
-      }
-      .video-row-clip .video-row video {
-        flex: 0 0 100vw;
-        width: 100vw;
+      .video-row video {
+        flex: none;
+        width: 100%;
       }
     }
 
@@ -449,19 +436,8 @@
 
     // --- Mobile horizontal video scroll ---
     function updateVideoScroll() {
-      if (window.innerWidth > 768) return;
-      const vw = window.innerWidth;
-      document.querySelectorAll('.video-section').forEach(sec => {
-        const clip = sec.querySelector('.video-row-clip');
-        const row = sec.querySelector('.video-row');
-        const count = row.children.length;
-        const rect = sec.getBoundingClientRect();
-        const clipH = clip.offsetHeight;
-        const travel = sec.offsetHeight - clipH;
-        if (travel <= 0) return;
-        const progress = Math.min(Math.max(-rect.top / travel, 0), 1);
-        row.style.transform = `translateX(-${progress * vw * (count - 1)}px)`;
-      });
+      // Videos stack vertically on mobile — no horizontal scroll needed
+      return;
     }
 
     // --- Lazy-load videos: only play when visible ---
